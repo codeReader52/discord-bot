@@ -34,19 +34,15 @@ async def on_message(message):
 
     content_parts = message.content.split()    
 
-    if len(content_parts) < 3:
-        await message.channel.send(f"Cannot understand command `{message.content}`")
+    if len(content_parts) < 2:
+        await message.channel.send(f"Yeah... I'm going to need a channel name to search. Try something like `@channel_search test`")
         return
     
-    command = content_parts[1] 
-    searched_channel_names = [n.lower() for n in content_parts[2:]]
-    
-    if command != '/channels':
-        await message.channel.send(f"Invalid command: {command}")
-        return
+    searched_channel_names = [n.lower() for n in content_parts[1:]]
 
     guild_id = message.guild.id
     guild_details = next(iter([g for g in client.guilds if g.id == guild_id]), None)
+
     if guild_details is not None:
         matching_channels = find_channels_matching(guild_details.channels, searched_channel_names)
         await message.channel.send(f"Channels: \n{format_channels(matching_channels)}")
