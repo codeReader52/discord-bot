@@ -3,7 +3,6 @@ import os
 
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
-APPLICATION_ID = 915040872125583370
 
 client = discord.Client()
 
@@ -25,14 +24,13 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-
-    if len(message.mentions) != 1:
-        return
     
-    if message.mentions[0].id != APPLICATION_ID:
+    clean_content = message.clean_content.strip()
+
+    if not clean_content.startswith('@channel_search '):
         return
 
-    content_parts = message.content.split()    
+    content_parts = clean_content.split()    
 
     if len(content_parts) < 2:
         await message.channel.send(f"Yeah... I'm going to need a channel name to search. Try something like `@channel_search test`")
