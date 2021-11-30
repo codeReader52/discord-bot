@@ -49,7 +49,7 @@ async def on_message(message):
     guild_details = next(iter([g for g in client.guilds if g.id == guild_id]), None)
     if guild_details is not None:
         matching_channels = find_channels_matching(guild_details.channels, searched_channel_names)
-        await message.channel.send(f"Channels: {format_channels(matching_channels)}")
+        await message.channel.send(f"Channels: \n{format_channels(matching_channels)}")
     else:
         await message.channel.send(f"Can't find any guilds matching any of {searched_channel_names}")
 
