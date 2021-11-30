@@ -41,11 +41,15 @@ async def on_message(message):
     guild_id = message.guild.id
     guild_details = next(iter([g for g in client.guilds if g.id == guild_id]), None)
 
-    if guild_details is not None:
-        matching_channels = find_channels_matching(guild_details.channels, searched_channel_names)
-        await message.channel.send(f"Channels: \n{format_channels(matching_channels)}")
-    else:
+    if guild_details is None:
         await message.channel.send(f"Can't find any guilds matching any of {searched_channel_names}")
 
+    matching_channels = find_channels_matching(guild_details.channels, searched_channel_names)
+    if len(matching_channels) == 0:
+        await message.channel.send(f"No such channels matching {searched_channel_names}")
+    else:
+        await message.channel.send(f"Channels: \n{format_channels(matching_channels)}")
+
+        
 if __name__ == "__main__":
     client.run(BOT_TOKEN)
