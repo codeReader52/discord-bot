@@ -3,6 +3,7 @@ import os
 
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
+APPLICATION_ID = 915040872125583370
 
 client = discord.Client()
 
@@ -25,14 +26,20 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    if len(message.mentions) != 1:
+        return
+    
+    if message.mentions[0].id != APPLICATION_ID:
+        return
+
     content_parts = message.content.split()    
 
-    if len(content_parts) < 2:
+    if len(content_parts) < 3:
         await message.channel.send(f"Cannot understand command `{message.content}`")
         return
     
-    command = content_parts[0] 
-    searched_channel_names = [n.lower() for n in content_parts[1:]]
+    command = content_parts[1] 
+    searched_channel_names = [n.lower() for n in content_parts[2:]]
     
     if command != '/channels':
         await message.channel.send(f"Invalid command: {command}")
